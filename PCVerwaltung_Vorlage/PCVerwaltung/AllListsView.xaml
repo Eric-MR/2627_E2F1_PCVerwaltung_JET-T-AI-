@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="PCVerwaltung.AllListsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+    <UserControl.Resources>
+        <Style x:Key="RightAlignStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Alle Listen" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,8"/>
+
+        <TabControl Grid.Row="1">
+            <!-- Cases -->
+            <TabItem Header="Gehäuse">
+                <DataGrid ItemsSource="{Binding Cases}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          CanUserAddRows="False" HeadersVisibility="Column"
+                          EnableRowVirtualization="True" Margin="4">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Hersteller" Binding="{Binding Hersteller}" Width="*" />
+                        <DataGridTextColumn Header="Modell"     Binding="{Binding Modell}"     Width="2*" />
+                        <DataGridTextColumn Header="Formfaktor" Binding="{Binding Formfaktor}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Mainboards -->
+            <TabItem Header="Mainboards">
+                <DataGrid ItemsSource="{Binding Mainboards}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          CanUserAddRows="False" HeadersVisibility="Column"
+                          EnableRowVirtualization="True" Margin="4">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Hersteller" Binding="{Binding Hersteller}" Width="*" />
+                        <DataGridTextColumn Header="Modell"     Binding="{Binding Modell}"     Width="2*" />
+                        <DataGridTextColumn Header="Formfaktor" Binding="{Binding Formfaktor}" Width="*" />
+                        <DataGridTextColumn Header="Sockel"     Binding="{Binding Sockel}"     Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- CPUs -->
+            <TabItem Header="CPUs">
+                <DataGrid ItemsSource="{Binding CPUs}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          CanUserAddRows="False" HeadersVisibility="Column"
+                          EnableRowVirtualization="True" Margin="4">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Modell"       Binding="{Binding Modell}"        Width="2*" />
+
+                        <DataGridTextColumn Header="Takt (GHz)" Width="*"
+                            Binding="{Binding Taktfrequenz, StringFormat={}{0:0.##}}"
+                            ElementStyle="{StaticResource RightAlignStyle}"/>
+                        <!-- Falls deine CPU einen Sockel hat:
+                        <DataGridTextColumn Header="Sockel" Binding="{Binding Sockel}" Width="*"/>
+                        -->
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- PCs (zusammengesetzte Objekte) -->
+            <TabItem Header="PCs">
+                <DataGrid ItemsSource="{Binding PCs}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          CanUserAddRows="False" HeadersVisibility="Column"
+                          EnableRowVirtualization="True" Margin="4">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="CPU"          Binding="{Binding Cpu.Modell}"         Width="2*" />
+                        <DataGridTextColumn Header="Takt (GHz)" Width="*"
+    Binding="{Binding Cpu.Taktfrequenz, StringFormat={}{0:0.##}}"
+    ElementStyle="{StaticResource RightAlignStyle}"/>
+                        <DataGridTextColumn Header="Board"        Binding="{Binding Mainboard.Modell}"   Width="2*" />
+                        <DataGridTextColumn Header="Formfaktor"   Binding="{Binding Mainboard.Formfaktor}" Width="*" />
+                        <DataGridTextColumn Header="Sockel"       Binding="{Binding Mainboard.Sockel}"   Width="*" />
+                        <DataGridTextColumn Header="Gehäuse"      Binding="{Binding Case.Modell}"        Width="2*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

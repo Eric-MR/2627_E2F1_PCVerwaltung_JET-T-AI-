@@ -1,0 +1,33 @@
+﻿<Window x:Class="PCVerwaltung.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PCVerwaltung"
+        mc:Ignorable="d"
+        Title="HardwareView" Height="450" Width="800">
+    <DockPanel>
+        <!-- Menü oben -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Hardware einpflegen">
+                <MenuItem Header="Gehäuse"   Click="OnMenuGehaeuse"/>
+                <MenuItem Header="Mainboard" Click="OnMenuMainboard"/>
+                <MenuItem Header="CPU"       Click="OnMenuCpu"/>
+                <MenuItem Header="RAM"       Click="OnMenuRam"/>
+                <Separator></Separator>
+                <MenuItem Header="Liste anzeigen"       Click="OnMenuAllLists"/>
+            </MenuItem>
+            <MenuItem Header="PC-System ">
+                <MenuItem Header="_Zusammenstellen" Click="OnMenuPcSystemAssemble"/>
+                <MenuItem Header="_Rechnung erstellen" Click="OnMenuGenerateInvoice"/>
+            </MenuItem>
+            <MenuItem Header="Kunden">
+                <MenuItem Header="_Einpflegen" Click="OnMenuPcSystemAssemble"/>
+                <MenuItem Header="_Bearbeiten" Click="OnMenuGenerateInvoice"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Inhaltsbereich -->
+        <ContentControl x:Name="ContentHost" Margin="16"/>
+    </DockPanel>
+</Window>

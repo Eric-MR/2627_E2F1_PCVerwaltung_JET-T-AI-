@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="PCVerwaltung.PcBuilderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             >
+    <UserControl.Resources>
+        <!-- rechte Ausrichtung für Zahlen -->
+        <Style x:Key="RightAlignStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="16" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+            <materialDesign:PackIcon Kind="DesktopTower" Width="24" Height="24" Margin="0,0,8,0"/>
+            <TextBlock Text="PC zusammenstellen" FontSize="20" FontWeight="SemiBold"
+                 VerticalAlignment="Center"/>
+            
+        </StackPanel>
+        <!-- Auswahlbereich -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Case -->
+            <materialDesign:Card Margin="0,0,12,0" Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Auswahl Gehäuse:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="CmbCase"
+                              ItemsSource="{Binding Cases}"
+                              SelectedIndex="0" MinWidth="240">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Hersteller}"/>
+                                    <Run Text=" "/>
+                                    <Run Text="{Binding Modell}"/>
+                                    <Run Text=" ("/>
+                                    <Run Text="{Binding Formfaktor}"/>
+                                    <Run Text=")"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- Mainboard -->
+            <materialDesign:Card Grid.Column="1" Margin="0,0,12,0" Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Auswahl Mainboard:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="CmbMainboard"
+                              ItemsSource="{Binding Mainboards}"
+                              SelectedIndex="0" MinWidth="240">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Hersteller}"/>
+                                    <Run Text=" "/>
+                                    <Run Text="{Binding Modell}"/>
+                                    <Run Text=" ("/>
+                                    <Run Text="{Binding Formfaktor}"/>
+                                    <Run Text=", "/>
+                                    <Run Text="{Binding Sockel}"/>
+                                    <Run Text=")"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- CPU -->
+            <materialDesign:Card Grid.Column="2" Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Auswahl CPU:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="CmbCpu"
+                              ItemsSource="{Binding CPUs}"
+                              SelectedIndex="0" MinWidth="240">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Modell}"/>
+                                    <!-- Falls deine CPU eine Sockel-Eigenschaft hat, füge die Zeilen aus: -->
+                                    <!-- <Run Text=" ("/><Run Text="{Binding Sockel}"/><Run Text=")"/> -->
+                                    <Run Text=" – "/>
+                                    <Run Text="{Binding Taktfrequenz, StringFormat={}{0:0.##} }"/>
+                                    <Run Text=" GHz"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+
+        <!-- Aktionen + Ergebnisliste -->
+        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,12,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,8">
+                <Button Content="In PC-Liste speichern"
+                        
+                        Width="180" Click="OnSaveClick"/>
+            </StackPanel>
+
+            <!-- PC-Liste -->
+            <materialDesign:Card Padding="8">
+            <DataGrid ItemsSource="{Binding PCs}"
+                      Name="dgPCs"
+                      
+                      AutoGenerateColumns="False" IsReadOnly="True"
+                      CanUserAddRows="False" HeadersVisibility="Column"
+                      EnableRowVirtualization="True" Margin="0,4,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="CPU"        Binding="{Binding Cpu.Modell}"       Width="2*"/>
+                    <DataGridTextColumn Header="Takt (GHz)" Width="*"
+                        ElementStyle="{StaticResource RightAlignStyle}">
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="Cpu.Taktfrequenz" StringFormat="0.##"/>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Mainboard"  Binding="{Binding Mainboard.Modell}" Width="2*"/>
+                    <DataGridTextColumn Header="Formfaktor" Binding="{Binding Mainboard.Formfaktor}" Width="*"/>
+                    <DataGridTextColumn Header="Sockel"     Binding="{Binding Mainboard.Sockel}" Width="*"/>
+                    <DataGridTextColumn Header="Gehäuse"    Binding="{Binding Case.Modell}"      Width="2*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            </materialDesign:Card>
+        </StackPanel>
+    </Grid>
+</UserControl>
+
