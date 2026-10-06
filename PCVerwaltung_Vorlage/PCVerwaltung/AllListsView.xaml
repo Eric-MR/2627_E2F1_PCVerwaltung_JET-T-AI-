@@ -6,9 +6,132 @@
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900">
     <UserControl.Resources>
-        <Style x:Key="RightAlignStyle" TargetType="TextBlock">
-            <Setter Property="TextAlignment" Value="Right"/>
+
+        <Style x:Key="RightAlignStyle"
+           TargetType="TextBlock">
+            <Setter Property="TextAlignment"
+                Value="Right" />
+            <Setter Property="Foreground"
+                Value="{DynamicResource AppTextBrush}" />
         </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Foreground"
+            Value="{DynamicResource AppTextBrush}" />
+
+            <Setter Property="Background"
+            Value="{DynamicResource AppSurfaceBrush}" />
+
+            <Setter Property="BorderBrush"
+            Value="{DynamicResource AppBorderBrush}" />
+
+            <Setter Property="FontSize"
+            Value="15" />
+
+            <Setter Property="RowHeight"
+            Value="38" />
+
+            <Setter Property="ColumnHeaderHeight"
+            Value="42" />
+
+            <Setter Property="GridLinesVisibility"
+            Value="Horizontal" />
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Foreground"
+            Value="{DynamicResource AppTextBrush}" />
+
+            <Setter Property="Background"
+            Value="{DynamicResource AppSurfaceBrush}" />
+
+            <Setter Property="BorderBrush"
+            Value="{DynamicResource AppBorderBrush}" />
+
+            <Setter Property="FontSize"
+            Value="14" />
+
+            <Setter Property="FontWeight"
+            Value="SemiBold" />
+
+            <Setter Property="Padding"
+            Value="10,0" />
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Foreground"
+            Value="{DynamicResource AppTextBrush}" />
+
+            <Setter Property="Background"
+            Value="{DynamicResource AppSurfaceBrush}" />
+
+            <Style.Triggers>
+
+                <!-- Hover -->
+                <Trigger Property="IsMouseOver"
+                 Value="True">
+
+                    <Setter Property="Background"
+                    Value="{DynamicResource AppHoverBrush}" />
+
+                    <Setter Property="Foreground"
+                    Value="{DynamicResource AppTextBrush}" />
+                </Trigger>
+
+                <!-- Auswahl -->
+                <Trigger Property="IsSelected"
+                 Value="True">
+
+                    <Setter Property="Background"
+                    Value="{DynamicResource AppSelectionBrush}" />
+
+                    <Setter Property="Foreground"
+                    Value="{DynamicResource AppSelectionTextBrush}" />
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Foreground"
+            Value="{DynamicResource AppTextBrush}" />
+
+            <Setter Property="Background"
+            Value="Transparent" />
+
+            <Setter Property="BorderBrush"
+            Value="{DynamicResource AppBorderBrush}" />
+
+            <Setter Property="Padding"
+            Value="10,0" />
+
+            <Style.Triggers>
+
+                <!-- Hover auf einer Zelle -->
+                <Trigger Property="IsMouseOver"
+                 Value="True">
+
+                    <Setter Property="Background"
+                    Value="{DynamicResource AppHoverBrush}" />
+
+                    <Setter Property="Foreground"
+                    Value="{DynamicResource AppTextBrush}" />
+                </Trigger>
+
+                <!-- Ausgewählte Zelle -->
+                <Trigger Property="IsSelected"
+                 Value="True">
+
+                    <Setter Property="Background"
+                    Value="{DynamicResource AppSelectionBrush}" />
+
+                    <Setter Property="Foreground"
+                    Value="{DynamicResource AppSelectionTextBrush}" />
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
     <Grid Margin="16">
         <Grid.RowDefinitions>
@@ -16,8 +139,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Alle Listen" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,8"/>
-
+        <TextBlock 
+           Grid.Row="0"
+           Text="Alle Listen"
+           FontSize="20"
+           FontWeight="SemiBold"
+           Margin="0,0,0,8"
+           Foreground="{DynamicResource AppTextBrush}" />
+        
         <TabControl Grid.Row="1">
             <!-- Cases -->
             <TabItem Header="Gehäuse">
@@ -26,9 +155,35 @@
                           CanUserAddRows="False" HeadersVisibility="Column"
                           EnableRowVirtualization="True" Margin="4">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Hersteller" Binding="{Binding Hersteller}" Width="*" />
-                        <DataGridTextColumn Header="Modell"     Binding="{Binding Modell}"     Width="2*" />
-                        <DataGridTextColumn Header="Formfaktor" Binding="{Binding Formfaktor}" Width="*" />
+                        <DataGridTextColumn Header="Hersteller" Binding="{Binding Hersteller}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground"
+                                        Value="{DynamicResource AppTextBrush}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Modell"     Binding="{Binding Modell}"     Width="2*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground"
+                                        Value="{DynamicResource AppTextBrush}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        
+                        <DataGridTextColumn Header="Formfaktor" Binding="{Binding Formfaktor}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground"
+                                        Value="{DynamicResource AppTextBrush}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+
+
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

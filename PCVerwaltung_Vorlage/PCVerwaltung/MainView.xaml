@@ -3,31 +3,430 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PCVerwaltung"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="HardwareView" Height="450" Width="800">
-    <DockPanel>
-        <!-- Menü oben -->
-        <Menu DockPanel.Dock="Top">
+        Title="PC-Verwaltung"
+        Height="600"
+        Width="1000"
+        MinHeight="450"
+        MinWidth="750"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Window.Resources>
+
+        <!-- Farben -->
+        <SolidColorBrush x:Key="AppBackgroundBrush"
+                         Color="#F7FAFC" />
+
+        <SolidColorBrush x:Key="AppSurfaceBrush"
+                         Color="#FFFFFF" />
+
+        <SolidColorBrush x:Key="AppTextBrush"
+                         Color="#172033" />
+
+        <SolidColorBrush x:Key="AppAccentBrush"
+                         Color="#3B82F6" />
+
+        <SolidColorBrush x:Key="AppBorderBrush"
+                         Color="#D9E2EC" />
+
+        <SolidColorBrush x:Key="AppHoverBrush"
+                         Color="#EAF3FF" />
+
+        <SolidColorBrush x:Key="AppSelectionBrush"
+                         Color="#BFDBFE" />
+
+        <SolidColorBrush x:Key="AppSelectionTextBrush"
+                         Color="#172033" />
+
+        <!-- Fensterbuttons -->
+        <Style x:Key="WindowButtonStyle"
+               TargetType="Button">
+
+            <Setter Property="Width"
+                    Value="42" />
+
+            <Setter Property="Height"
+                    Value="36" />
+
+            <Setter Property="Margin"
+                    Value="1,0,0,0" />
+
+            <Setter Property="Padding"
+                    Value="0" />
+
+            <Setter Property="FontSize"
+                    Value="16" />
+
+            <Setter Property="Foreground"
+                    Value="{DynamicResource AppTextBrush}" />
+
+            <Setter Property="Background"
+                    Value="Transparent" />
+
+            <Setter Property="BorderThickness"
+                    Value="0" />
+
+            <Setter Property="Cursor"
+                    Value="Hand" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="{DynamicResource AppHoverBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Schließen-Button -->
+        <Style x:Key="CloseButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource WindowButtonStyle}">
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+
+                    <Setter Property="Background"
+                            Value="#DC2626" />
+
+                    <Setter Property="Foreground"
+                            Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- KI-Button -->
+        <Style x:Key="AiButtonStyle"
+               TargetType="Button">
+
+            <Setter Property="Background"
+                    Value="{DynamicResource AppAccentBrush}" />
+
+            <Setter Property="Foreground"
+                    Value="White" />
+
+            <Setter Property="BorderThickness"
+                    Value="0" />
+
+            <Setter Property="FontSize"
+                    Value="14" />
+
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
+
+            <Setter Property="Padding"
+                    Value="16,8" />
+
+            <Setter Property="Cursor"
+                    Value="Hand" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="#2563EB" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <!-- Fensterleiste -->
+            <RowDefinition Height="42" />
+
+            <!-- Menü -->
+            <RowDefinition Height="Auto" />
+
+            <!-- Hauptinhalt -->
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Eigene Fensterleiste -->
+        <Grid Grid.Row="0"
+              Background="{DynamicResource AppSurfaceBrush}"
+              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Programmname -->
+            <TextBlock Grid.Column="0"
+                       Text="PC-Verwaltung"
+                       Margin="16,0,0,0"
+                       VerticalAlignment="Center"
+                       FontSize="15"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AppTextBrush}" />
+
+            <!-- Fensterbuttons -->
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <ToggleButton x:Name="ThemeToggleButton"
+                              Width="42"
+                              Height="36"
+                              Content="☾"
+                              ToolTip="Hell-/Dunkelmodus wechseln"
+                              Click="ThemeToggleButton_Click"
+                              Foreground="{DynamicResource AppTextBrush}"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              Cursor="Hand" />
+
+                <Button Content="—"
+                        Style="{StaticResource WindowButtonStyle}"
+                        ToolTip="Minimieren"
+                        Click="MinimizeButton_Click" />
+
+                <Button x:Name="MaximizeButton"
+                        Content="□"
+                        Style="{StaticResource WindowButtonStyle}"
+                        ToolTip="Maximieren"
+                        Click="MaximizeButton_Click" />
+
+                <Button Content="×"
+                        Style="{StaticResource CloseButtonStyle}"
+                        ToolTip="Schließen"
+                        Click="CloseButton_Click" />
+
+            </StackPanel>
+        </Grid>
+
+        <!-- Hauptmenü -->
+        <Menu Grid.Row="1"
+              Background="{DynamicResource AppSurfaceBrush}"
+              Foreground="{DynamicResource AppTextBrush}">
+
             <MenuItem Header="_Hardware einpflegen">
-                <MenuItem Header="Gehäuse"   Click="OnMenuGehaeuse"/>
-                <MenuItem Header="Mainboard" Click="OnMenuMainboard"/>
-                <MenuItem Header="CPU"       Click="OnMenuCpu"/>
-                <MenuItem Header="RAM"       Click="OnMenuRam"/>
-                <Separator></Separator>
-                <MenuItem Header="Liste anzeigen"       Click="OnMenuAllLists"/>
+
+                <MenuItem Header="Gehäuse"
+                          Click="OnMenuGehaeuse" />
+
+                <MenuItem Header="Mainboard"
+                          Click="OnMenuMainboard" />
+
+                <MenuItem Header="CPU"
+                          Click="OnMenuCpu" />
+
+                <MenuItem Header="RAM"
+                          Click="OnMenuRam" />
+
+                <Separator />
+
+                <MenuItem Header="Liste anzeigen"
+                          Click="OnMenuAllLists" />
+
             </MenuItem>
-            <MenuItem Header="PC-System ">
-                <MenuItem Header="_Zusammenstellen" Click="OnMenuPcSystemAssemble"/>
-                <MenuItem Header="_Rechnung erstellen" Click="OnMenuGenerateInvoice"/>
+
+            <MenuItem Header="PC-System">
+
+                <MenuItem Header="_Zusammenstellen"
+                          Click="OnMenuPcSystemAssemble" />
+
+                <MenuItem Header="_Rechnung erstellen"
+                          Click="OnMenuGenerateInvoice" />
+
             </MenuItem>
+
             <MenuItem Header="Kunden">
-                <MenuItem Header="_Einpflegen" Click="OnMenuPcSystemAssemble"/>
-                <MenuItem Header="_Bearbeiten" Click="OnMenuGenerateInvoice"/>
+
+                <MenuItem Header="_Einpflegen"
+                          Click="OnMenuPcSystemAssemble" />
+
+                <MenuItem Header="_Bearbeiten"
+                          Click="OnMenuGenerateInvoice" />
+
             </MenuItem>
+
         </Menu>
 
+
+
         <!-- Inhaltsbereich -->
-        <ContentControl x:Name="ContentHost" Margin="16"/>
-    </DockPanel>
+        <Grid Grid.Row="2"
+              Background="{DynamicResource AppBackgroundBrush}">
+
+            <!-- Bestehende Ansichten -->
+            <ContentControl x:Name="ContentHost"
+                            Margin="16" />
+
+
+
+
+            <!-- Normaler Button: am Anfang sichtbar -->
+            <Button x:Name="OpenAiButton"
+        Width="125"
+        Height="95"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Bottom"
+        Margin="0,0,24,24"
+        Background="Transparent"
+        BorderThickness="0"
+        ToolTip="Jett-KI öffnen"
+        Click="OpenAiButton_Click"
+        Panel.ZIndex="110">
+
+                <Image x:Name="AiButtonLogo"
+           Width="115"
+           Height="85"
+           Stretch="Uniform"
+           Source="/PCVerwaltung;component/Images/Jettgpt_NoBkg_B.png" />
+            </Button>
+
+            <!-- Jett und Chatfenster -->
+            <Grid x:Name="JettAiLayer"
+                  Width="610"
+                  Height="430"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom"
+                  Margin="0,0,11,0"
+                  Visibility="Visible"
+                  Panel.ZIndex="100">
+
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="JettAiTransform"
+                                        X="610" />
+                </Grid.RenderTransform>
+
+                <Grid.ColumnDefinitions>
+                    <!-- Jett -->
+                    <ColumnDefinition Width="250" />
+
+                    <!-- Chat -->
+                    <ColumnDefinition Width="360" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Jett beim Dash -->
+                <Image x:Name="JettImage"
+                       Grid.Column="0"
+                       Width="250"
+                       Height="390"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Stretch="Uniform"
+                       IsHitTestVisible="False"
+                       Source="/PCVerwaltung;component/Images/Jett_dash_links.png" />
+
+                <!-- KI-Chatfenster -->
+                <Border x:Name="AiChatPanel"
+                        Grid.Column="1"
+                        Width="350"
+                        Height="390"
+                        Padding="16"
+                        Background="{DynamicResource AppSurfaceBrush}"
+                        BorderBrush="{DynamicResource AppBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12">
+
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Chat-Kopfzeile -->
+                        <Grid Grid.Row="0">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Jett.gpt"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource AppTextBrush}" />
+
+                            <Button Grid.Column="1"
+                                    Background="Red"
+      
+                                    Content="X"
+                                    Width="32"
+                                    Height="32"
+                                    ToolTip="Chat schließen"
+                                    Click="CloseAiButton_Click"  />
+
+                        </Grid>
+
+                        <!-- Nachrichtenbereich -->
+                        <ScrollViewer Grid.Row="1"
+                                      Margin="0,16,0,12"
+                                      VerticalScrollBarVisibility="Auto">
+
+                            <TextBlock Text="Hallo! Ich bin dein KI-Assistent."
+                                       TextWrapping="Wrap"
+                                       Foreground="{DynamicResource AppTextBrush}" />
+
+                        </ScrollViewer>
+
+                        <!-- Eingabebereich -->
+                        <Grid Grid.Row="2">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="AiInputBox"
+                                     Height="38"
+                                     Margin="0,0,8,0"
+                                     Padding="8"
+                                     VerticalContentAlignment="Center"
+                                     Foreground="LightGray"
+                                     materialDesign:HintAssist.Hint="Nachricht eingeben" />
+
+                            <Button Grid.Column="1"
+                                    Foreground="White"
+                                    Content="Senden"
+                                    Height="38"
+                                    Padding="12,0" />
+
+                        </Grid>
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
 </Window>
