@@ -1,4 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.IO;
 using System.Windows;
@@ -140,31 +140,88 @@ namespace PCVerwaltung
             string resourceKey,
             string colorCode)
         {
-            if (Resources[resourceKey] is SolidColorBrush brush)
+            if (Application.Current.Resources[resourceKey] is SolidColorBrush brush)
             {
-                // Statt brush.Color = ...
-                Resources[resourceKey] = new SolidColorBrush(
-                    (Color)ColorConverter.ConvertFromString(colorCode));
+                brush.Color = (Color)ColorConverter.ConvertFromString(colorCode);
             }
         }
 
-        private BitmapImage LoadLogo(string fileName)
+        private BitmapImage? LoadLogo(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName)
+                || !string.Equals(
+                    Path.GetFileName(fileName),
+                    fileName,
+                    StringComparison.Ordinal))
+            {
+                return LoadFallbackLogo();
+            }
+
+            string resourcePath =
+                $"pack://application:,,,/PCVerwaltung;component/Images/{fileName}";
+
+            if (!Uri.TryCreate(
+                    resourcePath,
+                    UriKind.Absolute,
+                    out Uri? logoUri)
+                || logoUri.Scheme != "pack")
+            {
+                return LoadFallbackLogo();
+            }
+
+            return TryLoadBitmap(logoUri) ?? LoadFallbackLogo();
+        }
+
+        private BitmapImage? LoadFallbackLogo()
+        {
+            const string fallbackPath =
+                "pack://application:,,,/PCVerwaltung;component/Images/logo.png";
+
+            if (!Uri.TryCreate(
+                    fallbackPath,
+                    UriKind.Absolute,
+                    out Uri? fallbackUri))
+            {
+                return null;
+            }
+
+            return TryLoadBitmap(fallbackUri);
+        }
+
+        private BitmapImage? TryLoadBitmap(Uri imageUri)
         {
             try
             {
-                var logoUri = new Uri($"pack://application:,,,/PCVerwaltung;component/Images/{fileName}", UriKind.Absolute);
-                var bitmap = new BitmapImage();
+                BitmapImage bitmap = new BitmapImage();
+
                 bitmap.BeginInit();
-                bitmap.UriSource = logoUri;
+                bitmap.UriSource = imageUri;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
+
+                if (bitmap.PixelWidth <= 0 || bitmap.PixelHeight <= 0)
+                {
+                    return null;
+                }
+
                 bitmap.Freeze();
                 return bitmap;
             }
+            catch (ArgumentException)
+            {
+                return null;
+            }
             catch (IOException)
             {
-                // Fallback: eingebettete Standardgrafik oder null
-                return new BitmapImage(new Uri("pack://application:,,,/PCVerwaltung;component/Images/DefaultLogo.png", UriKind.Absolute));
+                return null;
+            }
+            catch (NotSupportedException)
+            {
+                return null;
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
             }
         }
 
@@ -270,7 +327,7 @@ namespace PCVerwaltung
             JettAiTransform.BeginAnimation(
                 TranslateTransform.XProperty,
                 dashAnimation);
-        } 
+        }
 
 
         private void CloseAiButton_Click(

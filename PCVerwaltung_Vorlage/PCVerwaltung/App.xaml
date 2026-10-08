@@ -13,15 +13,8 @@
                     SecondaryColor="LightBlue" />
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                <ResourceDictionary Source="/PCVerwaltung;component/Themes/ThemeResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- Eigene globale Farben -->
-            <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F7FAFC" />
-            <SolidColorBrush x:Key="AppSurfaceBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="AppTextBrush" Color="#172033" />
-            <SolidColorBrush x:Key="AppSecondaryTextBrush" Color="#64748B" />
-            <SolidColorBrush x:Key="AppBorderBrush" Color="#D9E2EC" />
-            <SolidColorBrush x:Key="AppAccentBrush" Color="#3B82F6" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
