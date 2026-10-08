@@ -9,14 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\Jettgpt_black.png" />
     <None Remove="Images\Jettgpt_NoBkg.png" />
     <None Remove="Images\Jettgpt_NoBkg_B.png" />
     <None Remove="Images\Jettgpt_NoBkg_W.png" />
-    <None Remove="Images\Jettgpt_white.png" />
     <None Remove="Images\Jett_dash_links.png" />
     <None Remove="Images\Jett_dash_rechts.png" />
-    <None Remove="Images\Jett_Peek.png" />
     <None Remove="Images\Jett_stand.png" />
   </ItemGroup>
 
@@ -25,14 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\Jettgpt_black.png" />
     <Resource Include="Images\Jettgpt_NoBkg.png" />
     <Resource Include="Images\Jettgpt_NoBkg_B.png" />
     <Resource Include="Images\Jettgpt_NoBkg_W.png" />
-    <Resource Include="Images\Jettgpt_white.png" />
     <Resource Include="Images\Jett_dash_links.png" />
     <Resource Include="Images\Jett_dash_rechts.png" />
-    <Resource Include="Images\Jett_Peek.png" />
     <Resource Include="Images\Jett_stand.png" />
   </ItemGroup>
 
