@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace PCVerwaltung.Classes
 {
-    public class Ram
+    public class HardwareKomponente
     {
         public long KomponenteId { get; set; }
         public long KomponententypId { get; set; }
