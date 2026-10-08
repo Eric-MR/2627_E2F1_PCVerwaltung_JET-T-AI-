@@ -36,7 +36,7 @@
                 <StackPanel>
                     <TextBlock Text="Auswahl Gehäuse:" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <ComboBox x:Name="CmbCase"
-                              ItemsSource="{Binding Cases}"
+                              ItemsSource="{Binding CasesData}"
                               SelectedIndex="0" MinWidth="240">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -59,7 +59,7 @@
                 <StackPanel>
                     <TextBlock Text="Auswahl Mainboard:" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <ComboBox x:Name="CmbMainboard"
-                              ItemsSource="{Binding Mainboards}"
+                              ItemsSource="{Binding MainboardsData}"
                               SelectedIndex="0" MinWidth="240">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -84,7 +84,7 @@
                 <StackPanel>
                     <TextBlock Text="Auswahl CPU:" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <ComboBox x:Name="CmbCpu"
-                              ItemsSource="{Binding CPUs}"
+                              ItemsSource="{Binding CPUsData}"
                               SelectedIndex="0" MinWidth="240">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -113,7 +113,7 @@
 
             <!-- PC-Liste -->
             <materialDesign:Card Padding="8">
-            <DataGrid ItemsSource="{Binding PCs}"
+            <DataGrid ItemsSource="{Binding PCsData}"
                       Name="dgPCs"
                       
                       AutoGenerateColumns="False" IsReadOnly="True"
