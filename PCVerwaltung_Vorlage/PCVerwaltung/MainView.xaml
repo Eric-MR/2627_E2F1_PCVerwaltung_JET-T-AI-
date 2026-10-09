@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:PCVerwaltung.Controls"
         mc:Ignorable="d"
         Title="PC-Verwaltung"
         Height="600"
@@ -106,54 +106,6 @@
 
                     <Setter Property="Foreground"
                             Value="White" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- KI-Button -->
-        <Style x:Key="AiButtonStyle"
-               TargetType="Button">
-
-            <Setter Property="Background"
-                    Value="{DynamicResource AppAccentBrush}" />
-
-            <Setter Property="Foreground"
-                    Value="White" />
-
-            <Setter Property="BorderThickness"
-                    Value="0" />
-
-            <Setter Property="FontSize"
-                    Value="14" />
-
-            <Setter Property="FontWeight"
-                    Value="SemiBold" />
-
-            <Setter Property="Padding"
-                    Value="16,8" />
-
-            <Setter Property="Cursor"
-                    Value="Hand" />
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="8"
-                                Padding="{TemplateBinding Padding}">
-
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                         Value="True">
-                    <Setter Property="Background"
-                            Value="#2563EB" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -288,143 +240,8 @@
 
 
 
-            <!-- Normaler Button: am Anfang sichtbar -->
-            <Button x:Name="OpenAiButton"
-        Width="125"
-        Height="95"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Bottom"
-        Margin="0,0,24,24"
-        Background="Transparent"
-        BorderThickness="0"
-        ToolTip="Jett-KI öffnen"
-        Click="OpenAiButton_Click"
-        Panel.ZIndex="110">
-
-                <Image x:Name="AiButtonLogo"
-           Width="115"
-           Height="85"
-           Stretch="Uniform"
-           Source="/PCVerwaltung;component/Images/Jettgpt_NoBkg_B.png" />
-            </Button>
-
-            <!-- Jett und Chatfenster -->
-            <Grid x:Name="JettAiLayer"
-                  Width="610"
-                  Height="430"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Bottom"
-                  Margin="0,0,11,0"
-                  Visibility="Visible"
-                  Panel.ZIndex="100">
-
-                <Grid.RenderTransform>
-                    <TranslateTransform x:Name="JettAiTransform"
-                                        X="610" />
-                </Grid.RenderTransform>
-
-                <Grid.ColumnDefinitions>
-                    <!-- Jett -->
-                    <ColumnDefinition Width="250" />
-
-                    <!-- Chat -->
-                    <ColumnDefinition Width="360" />
-                </Grid.ColumnDefinitions>
-
-                <!-- Jett beim Dash -->
-                <Image x:Name="JettImage"
-                       Grid.Column="0"
-                       Width="250"
-                       Height="390"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Bottom"
-                       Stretch="Uniform"
-                       IsHitTestVisible="False"
-                       Source="/PCVerwaltung;component/Images/Jett_dash_links.png" />
-
-                <!-- KI-Chatfenster -->
-                <Border x:Name="AiChatPanel"
-                        Grid.Column="1"
-                        Width="350"
-                        Height="390"
-                        Padding="16"
-                        Background="{DynamicResource AppSurfaceBrush}"
-                        BorderBrush="{DynamicResource AppBorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="12">
-
-                    <Grid>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <!-- Chat-Kopfzeile -->
-                        <Grid Grid.Row="0">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="Jett.gpt"
-                                       FontSize="20"
-                                       FontWeight="SemiBold"
-                                       VerticalAlignment="Center"
-                                       Foreground="{DynamicResource AppTextBrush}" />
-
-                            <Button Grid.Column="1"
-                                    Background="Red"
-      
-                                    Content="X"
-                                    Width="32"
-                                    Height="32"
-                                    ToolTip="Chat schließen"
-                                    Click="CloseAiButton_Click"  />
-
-                        </Grid>
-
-                        <!-- Nachrichtenbereich -->
-                        <ScrollViewer Grid.Row="1"
-                                      Margin="0,16,0,12"
-                                      VerticalScrollBarVisibility="Auto">
-
-                            <TextBlock Text="Hallo! Ich bin dein KI-Assistent."
-                                       TextWrapping="Wrap"
-                                       Foreground="{DynamicResource AppTextBrush}" />
-
-                        </ScrollViewer>
-
-                        <!-- Eingabebereich -->
-                        <Grid Grid.Row="2">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox x:Name="AiInputBox"
-                                     Height="38"
-                                     Margin="0,0,8,0"
-                                     Padding="8"
-                                     VerticalContentAlignment="Center"
-                                     Foreground="LightGray"
-                                     materialDesign:HintAssist.Hint="Nachricht eingeben" />
-
-                            <Button Grid.Column="1"
-                                    Foreground="White"
-                                    Content="Senden"
-                                    Height="38"
-                                    Padding="12,0" />
-
-                        </Grid>
-
-                    </Grid>
-                </Border>
-
-            </Grid>
+            <controls:JettGptControl x:Name="JettGptControl"
+                                     Panel.ZIndex="100" />
 
         </Grid>
 
