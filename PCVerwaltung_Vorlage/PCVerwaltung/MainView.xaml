@@ -340,7 +340,8 @@
                         <Grid Grid.Row="0">
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="45*" />
+                                <ColumnDefinition Width="97*"/>
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
@@ -348,9 +349,9 @@
                                        FontSize="20"
                                        FontWeight="SemiBold"
                                        VerticalAlignment="Center"
-                                       Foreground="{DynamicResource AppTextBrush}" />
+                                       Foreground="{DynamicResource AppTextBrush}" Grid.ColumnSpan="2" />
 
-                            <Button Grid.Column="1"
+                            <Button Grid.Column="2"
                                     Background="Red"
 
                                     Content="X"
@@ -381,18 +382,19 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBox x:Name="AiInputBox"
-                                     Height="38"
-                                     Margin="0,0,8,0"
-                                     Padding="8"
-                                     VerticalContentAlignment="Center"
-                                     Foreground="LightGray"
-                                     materialDesign:HintAssist.Hint="Nachricht eingeben" />
+                                 Grid.Column="0"
+                                 Height="38"
+                                 Margin="0,0,8,0"
+                                 Padding="8"
+                                 VerticalContentAlignment="Center"
+                                 materialDesign:HintAssist.Hint="Nachricht eingeben" />
 
-                            <Button Grid.Column="1"
-                                    Foreground="White"
-                                    Content="Senden"
-                                    Height="38"
-                                    Padding="12,0" />
+                            <Button x:Name="SendAiButton"
+                                Grid.Column="1"
+                                Content="Senden"
+                                Height="38"
+                                Padding="12,0"
+                                Click="SendAiButton_Click" />       
 
                         </Grid>
 

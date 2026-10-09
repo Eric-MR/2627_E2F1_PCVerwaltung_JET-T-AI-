@@ -140,10 +140,11 @@ namespace PCVerwaltung
             string resourceKey,
             string colorCode)
         {
-            if (Application.Current.Resources[resourceKey] is SolidColorBrush brush)
-            {
-                brush.Color = (Color)ColorConverter.ConvertFromString(colorCode);
-            }
+            Color color = (Color)ColorConverter.ConvertFromString(colorCode);
+
+            SolidColorBrush newBrush = new SolidColorBrush(color);
+
+            Application.Current.Resources[resourceKey] = newBrush;
         }
 
         private BitmapImage? LoadLogo(string fileName)
@@ -373,8 +374,31 @@ namespace PCVerwaltung
         }
 
 
+    
+
+    private void SendAiButton_Click(
+    object sender,
+    RoutedEventArgs e)
+        {
+            string message = AiInputBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                MessageBox.Show(
+                    "Bitte zuerst eine Nachricht eingeben.",
+                    "Keine Nachricht",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                return;
+            }
+
+            // Hier kannst du die Nachricht weiterverarbeiten.
+            MessageBox.Show(
+                message,
+                "Nachricht aus dem Chat");
+        }
+
+
     }
-
-
-
 }
