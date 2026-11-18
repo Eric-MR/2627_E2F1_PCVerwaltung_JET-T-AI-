@@ -34,10 +34,24 @@ namespace PCVerwaltung
             var view = new GehaeuseView();
             view.Saved += data =>
             {
-                // TODO: hier weiterverarbeiten (DB speichern, Liste refreshen, etc.)
-                // z.B. Debug.WriteLine($"{data.Hersteller} - {data.Modell} - {data.Formfaktor}");
-                App.Cases.Add(data);
-                
+                try
+                {
+                    var typeId = App.Database.EnsureKomponententyp("case");
+                    data.Id = App.Database.InsertHardwareKomponente(new PCVerwaltung.Classes.HardwareKomponente
+                    {
+                        KomponententypId = typeId,
+                        Hersteller = data.Hersteller,
+                        Modell = data.Modell,
+                        Beschreibung = $"Formfaktor: {data.Formfaktor}",
+                        Aktiv = true
+                    });
+                    App.Cases.Add(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Gehäuse konnte nicht in der Datenbank gespeichert werden.\n\n{ex.Message}",
+                        "Database error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             };
             ContentHost.Content = view;
         }

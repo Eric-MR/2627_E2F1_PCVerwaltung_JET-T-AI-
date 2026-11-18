@@ -21,7 +21,7 @@
         <TabControl Grid.Row="1">
             <!-- Cases -->
             <TabItem Header="Gehäuse">
-                <DataGrid ItemsSource="{Binding Cases}"
+                <DataGrid ItemsSource="{Binding CasesData}"
                           AutoGenerateColumns="False" IsReadOnly="True"
                           CanUserAddRows="False" HeadersVisibility="Column"
                           EnableRowVirtualization="True" Margin="4">
@@ -35,7 +35,7 @@
 
             <!-- Mainboards -->
             <TabItem Header="Mainboards">
-                <DataGrid ItemsSource="{Binding Mainboards}"
+                <DataGrid ItemsSource="{Binding MainboardsData}"
                           AutoGenerateColumns="False" IsReadOnly="True"
                           CanUserAddRows="False" HeadersVisibility="Column"
                           EnableRowVirtualization="True" Margin="4">
@@ -50,7 +50,7 @@
 
             <!-- CPUs -->
             <TabItem Header="CPUs">
-                <DataGrid ItemsSource="{Binding CPUs}"
+                <DataGrid ItemsSource="{Binding CPUsData}"
                           AutoGenerateColumns="False" IsReadOnly="True"
                           CanUserAddRows="False" HeadersVisibility="Column"
                           EnableRowVirtualization="True" Margin="4">
@@ -69,7 +69,7 @@
 
             <!-- PCs (zusammengesetzte Objekte) -->
             <TabItem Header="PCs">
-                <DataGrid ItemsSource="{Binding PCs}"
+                <DataGrid ItemsSource="{Binding PCsData}"
                           AutoGenerateColumns="False" IsReadOnly="True"
                           CanUserAddRows="False" HeadersVisibility="Column"
                           EnableRowVirtualization="True" Margin="4">

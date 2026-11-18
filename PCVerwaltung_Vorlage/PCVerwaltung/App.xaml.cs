@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using MySql.Data.MySqlClient;
 
 namespace PCVerwaltung
 {
@@ -10,42 +11,62 @@ namespace PCVerwaltung
     /// </summary>
     public partial class App : Application
     {
+        public static DB Database { get; } = new DB();
+        public static List<Case> Cases { get; private set; } = new();
+        public static List<CPU> CPUs { get; private set; } = new();
+        public static List<Mainboard> Mainboards { get; private set; } = new();
+        public static List<PC> PCs { get; private set; } = new();
+        public List<Case> CasesData => Cases;
+        public List<CPU> CPUsData => CPUs;
+        public List<Mainboard> MainboardsData => Mainboards;
+        public List<PC> PCsData => PCs;
 
-        public static List<Case> Cases { get; } = new()
+        protected override void OnStartup(StartupEventArgs e)
         {
-            new Case("Fractal Design", "Meshify 2",       Formfaktor.ATX),
-            new Case("Cooler Master",  "NR400",           Formfaktor.MicroATX),
-            new Case("NZXT",           "H1",              Formfaktor.MiniITX),
-            new Case("be quiet!",      "Pure Base 500DX", Formfaktor.ATX),
-            new Case("Lian Li",        "O11 Dynamic",     Formfaktor.ATX),
-        };
+            var stage = "opening database connection";
+            try
+            {
+                Database.Initialize();
+                stage = "checking database tables and columns";
+                Database.ValidateHardwareSchema();
+                stage = "writing missing base hardware data";
+                Database.SeedIfEmpty();
+                stage = "reading hardware data";
+                Cases = Database.GetCases();
+                CPUs = Database.GetCPUs();
+                Mainboards = Database.GetMainboards();
 
-        public static List<CPU> CPUs { get; } = new()
-        {
-            new CPU("AMD Ryzen 7 7800X3D", 4.2),
-            new CPU("Intel Core i5-13600K",3.5),
-            new CPU("AMD Ryzen 5 5600",    3.5),
-            new CPU("Intel Core i7-12700F",2.1),
-            new CPU("AMD Ryzen 7 5700G",   3.8),
-        };
+                PCs = new List<PC>();
+                var count = Math.Min(Math.Min(Cases.Count, CPUs.Count), Mainboards.Count);
+                for (int i = 0; i < count; i++)
+                {
+                    PCs.Add(new PC(Cases[i], CPUs[i], Mainboards[i]));
+                }
 
-        public static List<Mainboard> Mainboards { get; } = new()
-        {
-            new Mainboard("ASUS",     "TUF GAMING B650-PLUS", Formfaktor.ATX,      SockelTyp.AM5),
-            new Mainboard("MSI",      "PRO B760M-A",          Formfaktor.MicroATX, SockelTyp.LGA1700),
-            new Mainboard("Gigabyte", "B550I AORUS PRO AX",   Formfaktor.MiniITX,  SockelTyp.AM4),
-            new Mainboard("ASRock",   "B650M Pro RS",         Formfaktor.MicroATX, SockelTyp.AM5),
-            new Mainboard("ASUS",     "ROG Strix Z690-A",     Formfaktor.ATX,      SockelTyp.LGA1700),
-        };
+                if (Cases.Count == 0 || CPUs.Count == 0 || Mainboards.Count == 0)
+                {
+                    MessageBox.Show(
+                        $"The database connection and queries succeeded, but one or more hardware lists are empty.\nCases: {Cases.Count}; CPUs: {CPUs.Count}; Mainboards: {Mainboards.Count}.\nCheck komponententyp.bezeichnung and matching rows in hardwarekomponente.",
+                        "Database connected; data missing",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                var rootException = ex.GetBaseException();
+                var errorDetails = rootException is MySqlException mysqlException
+                    ? $"MySQL error {mysqlException.Number} (SQL state {mysqlException.SqlState}): {mysqlException.Message}"
+                    : rootException.Message;
+                MessageBox.Show(
+                    $"Failed while {stage}.\n\n{errorDetails}",
+                    "Database error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
 
-        public static List<PC> PCs { get; } = new()
-        {
-            new PC(Cases[0], CPUs[0], Mainboards[0]),
-            new PC(Cases[1], CPUs[1], Mainboards[1]),
-            new PC(Cases[2], CPUs[2], Mainboards[2]),
-            new PC(Cases[3], CPUs[3], Mainboards[4]),
-            new PC(Cases[4], CPUs[4], Mainboards[3]),
-        };
+            base.OnStartup(e);
+        }
 
     }
 
