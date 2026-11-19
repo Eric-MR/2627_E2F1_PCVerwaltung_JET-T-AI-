@@ -3,222 +3,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:PCVerwaltung.Controls"
+        xmlns:local="clr-namespace:PCVerwaltung"
         mc:Ignorable="d"
-        Title="PC-Verwaltung"
-        Height="600"
-        Width="1000"
-        MinHeight="450"
-        MinWidth="750"
-        WindowStyle="None"
-        ResizeMode="CanResize"
-        Background="{DynamicResource AppBackgroundBrush}">
-
-    <Window.Resources>
-
-        <!-- Fensterbuttons -->
-        <Style x:Key="WindowButtonStyle"
-               TargetType="Button">
-
-            <Setter Property="Width"
-                    Value="42" />
-
-            <Setter Property="Height"
-                    Value="36" />
-
-            <Setter Property="Margin"
-                    Value="1,0,0,0" />
-
-            <Setter Property="Padding"
-                    Value="0" />
-
-            <Setter Property="FontSize"
-                    Value="16" />
-
-            <Setter Property="Foreground"
-                    Value="{DynamicResource AppTextBrush}" />
-
-            <Setter Property="Background"
-                    Value="Transparent" />
-
-            <Setter Property="BorderThickness"
-                    Value="0" />
-
-            <Setter Property="Cursor"
-                    Value="Hand" />
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                         Value="True">
-                    <Setter Property="Background"
-                            Value="{DynamicResource AppHoverBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Schließen-Button -->
-        <Style x:Key="CloseButtonStyle"
-               TargetType="Button"
-               BasedOn="{StaticResource WindowButtonStyle}">
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                         Value="True">
-
-                    <Setter Property="Background"
-                            Value="#DC2626" />
-
-                    <Setter Property="Foreground"
-                            Value="White" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-    </Window.Resources>
-
-    <Grid>
-
-        <Grid.RowDefinitions>
-            <!-- Fensterleiste -->
-            <RowDefinition Height="42" />
-
-            <!-- Menü -->
-            <RowDefinition Height="Auto" />
-
-            <!-- Hauptinhalt -->
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <!-- Eigene Fensterleiste -->
-        <Grid Grid.Row="0"
-              Background="{DynamicResource AppSurfaceBrush}"
-              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <!-- Programmname -->
-            <TextBlock Grid.Column="0"
-                       Text="PC-Verwaltung"
-                       Margin="16,0,0,0"
-                       VerticalAlignment="Center"
-                       FontSize="15"
-                       FontWeight="SemiBold"
-                       Foreground="{DynamicResource AppTextBrush}" />
-
-            <!-- Fensterbuttons -->
-            <StackPanel Grid.Column="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right">
-
-                <ToggleButton x:Name="ThemeToggleButton"
-                              Width="42"
-                              Height="36"
-                              Content="☾"
-                              ToolTip="Hell-/Dunkelmodus wechseln"
-                              Click="ThemeToggleButton_Click"
-                              Foreground="{DynamicResource AppTextBrush}"
-                              Background="Transparent"
-                              BorderThickness="0"
-                              Cursor="Hand" />
-
-                <Button Content="—"
-                        Style="{StaticResource WindowButtonStyle}"
-                        ToolTip="Minimieren"
-                        Click="MinimizeButton_Click" />
-
-                <Button x:Name="MaximizeButton"
-                        Content="□"
-                        Style="{StaticResource WindowButtonStyle}"
-                        ToolTip="Maximieren"
-                        Click="MaximizeButton_Click" />
-
-                <Button Content="×"
-                        Style="{StaticResource CloseButtonStyle}"
-                        ToolTip="Schließen"
-                        Click="CloseButton_Click" />
-
-            </StackPanel>
-        </Grid>
-
-        <!-- Hauptmenü -->
-        <Menu Grid.Row="1"
-              Background="{DynamicResource AppSurfaceBrush}"
-              Foreground="{DynamicResource AppTextBrush}">
-
+        Title="HardwareView" Height="450" Width="800">
+    <DockPanel>
+        <!-- Menü oben -->
+        <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Hardware einpflegen">
-
-                <MenuItem Header="Gehäuse"
-                          Click="OnMenuGehaeuse" />
-
-                <MenuItem Header="Mainboard"
-                          Click="OnMenuMainboard" />
-
-                <MenuItem Header="CPU"
-                          Click="OnMenuCpu" />
-
-                <MenuItem Header="RAM"
-                          Click="OnMenuRam" />
-
-                <Separator />
-
-                <MenuItem Header="Liste anzeigen"
-                          Click="OnMenuAllLists" />
-
+                <MenuItem Header="Gehäuse"   Click="OnMenuGehaeuse"/>
+                <MenuItem Header="Mainboard" Click="OnMenuMainboard"/>
+                <MenuItem Header="CPU"       Click="OnMenuCpu"/>
+                <MenuItem Header="RAM"       Click="OnMenuRam"/>
+                <Separator></Separator>
+                <MenuItem Header="Liste anzeigen"       Click="OnMenuAllLists"/>
             </MenuItem>
-
-            <MenuItem Header="PC-System">
-
-                <MenuItem Header="_Zusammenstellen"
-                          Click="OnMenuPcSystemAssemble" />
-
-                <MenuItem Header="_Rechnung erstellen"
-                          Click="OnMenuGenerateInvoice" />
-
+            <MenuItem Header="PC-System ">
+                <MenuItem Header="_Zusammenstellen" Click="OnMenuPcSystemAssemble"/>
+                <MenuItem Header="_Rechnung erstellen" Click="OnMenuGenerateInvoice"/>
             </MenuItem>
-
             <MenuItem Header="Kunden">
-
-                <MenuItem Header="_Einpflegen"
-                          Click="OnMenuPcSystemAssemble" />
-
-                <MenuItem Header="_Bearbeiten"
-                          Click="OnMenuGenerateInvoice" />
-
+                <MenuItem Header="_Einpflegen" Click="OnMenuPcSystemAssemble"/>
+                <MenuItem Header="_Bearbeiten" Click="OnMenuGenerateInvoice"/>
             </MenuItem>
-
         </Menu>
 
-
-
         <!-- Inhaltsbereich -->
-        <Grid Grid.Row="2"
-              Background="{DynamicResource AppBackgroundBrush}">
-
-            <!-- Bestehende Ansichten -->
-            <ContentControl x:Name="ContentHost"
-                            Margin="16" />
-
-
-
-            <controls:JettGptControl x:Name="JettGptControl"
-                                     Panel.ZIndex="100" />
-
-
-        </Grid>
-
-    </Grid>
+        <ContentControl x:Name="ContentHost" Margin="16"/>
+    </DockPanel>
 </Window>
