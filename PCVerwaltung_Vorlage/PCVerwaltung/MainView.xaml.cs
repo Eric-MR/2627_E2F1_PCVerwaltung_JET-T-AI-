@@ -1,4 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -133,14 +133,38 @@ namespace PCVerwaltung
             string resourceKey,
             string colorCode)
         {
-            if (Resources[resourceKey] is SolidColorBrush brush)
-            {
-                // Statt brush.Color = ...
-                Resources[resourceKey] = new SolidColorBrush(
-                    (Color)ColorConverter.ConvertFromString(colorCode));
-            }
+            Color color = (Color)ColorConverter.ConvertFromString(colorCode);
+
+            SolidColorBrush newBrush = new SolidColorBrush(color);
+
+            Application.Current.Resources[resourceKey] = newBrush;
         }
 
+        private BitmapImage? LoadLogo(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName)
+                || !string.Equals(
+                    Path.GetFileName(fileName),
+                    fileName,
+                    StringComparison.Ordinal))
+            {
+                return LoadFallbackLogo();
+            }
+
+            string resourcePath =
+                $"pack://application:,,,/PCVerwaltung;component/Images/{fileName}";
+
+            if (!Uri.TryCreate(
+                    resourcePath,
+                    UriKind.Absolute,
+                    out Uri? logoUri)
+                || logoUri.Scheme != "pack")
+            {
+                return LoadFallbackLogo();
+            }
+
+            return TryLoadBitmap(logoUri) ?? LoadFallbackLogo();
+        }
         private void OnMenuGehaeuse(
             object sender,
             RoutedEventArgs e)
@@ -149,7 +173,24 @@ namespace PCVerwaltung
 
             view.Saved += data =>
             {
-                App.Cases.Add(data);
+                try
+                {
+                    var typeId = App.Database.EnsureKomponententyp("case");
+                    data.Id = App.Database.InsertHardwareKomponente(new PCVerwaltung.Classes.HardwareKomponente
+                    {
+                        KomponententypId = typeId,
+                        Hersteller = data.Hersteller,
+                        Modell = data.Modell,
+                        Beschreibung = $"Formfaktor: {data.Formfaktor}",
+                        Aktiv = true
+                    });
+                    App.Cases.Add(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Gehäuse konnte nicht in der Datenbank gespeichert werden.\n\n{ex.Message}",
+                        "Database error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             };
 
             ContentHost.Content = view;
@@ -198,6 +239,29 @@ namespace PCVerwaltung
         }
     }
 
+    private void SendAiButton_Click(
+    object sender,
+    RoutedEventArgs e)
+        {
+            string message = AiInputBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                MessageBox.Show(
+                    "Bitte zuerst eine Nachricht eingeben.",
+                    "Keine Nachricht",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                return;
+            }
+
+            // Hier kannst du die Nachricht weiterverarbeiten.
+            MessageBox.Show(
+                message,
+                "Nachricht aus dem Chat");
+        }
 
 
+    }
 }
