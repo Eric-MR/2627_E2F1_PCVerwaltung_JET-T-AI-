@@ -1,11 +1,8 @@
 using MaterialDesignThemes.Wpf;
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 
 
 namespace PCVerwaltung
@@ -13,8 +10,6 @@ namespace PCVerwaltung
     public partial class MainView : Window
     {
         private bool _isDarkMode;
-        private bool _isAiChatOpen;
-        private bool _isAiAnimationRunning;
 
         public MainView()
         {
@@ -117,8 +112,6 @@ namespace PCVerwaltung
                 ThemeToggleButton.Content = "☀";
                 ThemeToggleButton.ToolTip = "Light Mode aktivieren";
 
-                AiButtonLogo.Source = LoadLogo(
-    "Jettgpt_NoBkg_W.png");
             }
             else
             {
@@ -131,9 +124,9 @@ namespace PCVerwaltung
                 ThemeToggleButton.Content = "☾";
                 ThemeToggleButton.ToolTip = "Dark Mode aktivieren";
 
-                AiButtonLogo.Source = LoadLogo(
-    "Jettgpt_NoBkg_B.png");
             }
+
+            JettGptControl.IsDarkMode = darkMode;
         }
 
         private void SetResourceColor(
@@ -172,60 +165,6 @@ namespace PCVerwaltung
 
             return TryLoadBitmap(logoUri) ?? LoadFallbackLogo();
         }
-
-        private BitmapImage? LoadFallbackLogo()
-        {
-            const string fallbackPath =
-                "pack://application:,,,/PCVerwaltung;component/Images/logo.png";
-
-            if (!Uri.TryCreate(
-                    fallbackPath,
-                    UriKind.Absolute,
-                    out Uri? fallbackUri))
-            {
-                return null;
-            }
-
-            return TryLoadBitmap(fallbackUri);
-        }
-
-        private BitmapImage? TryLoadBitmap(Uri imageUri)
-        {
-            try
-            {
-                BitmapImage bitmap = new BitmapImage();
-
-                bitmap.BeginInit();
-                bitmap.UriSource = imageUri;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-
-                if (bitmap.PixelWidth <= 0 || bitmap.PixelHeight <= 0)
-                {
-                    return null;
-                }
-
-                bitmap.Freeze();
-                return bitmap;
-            }
-            catch (ArgumentException)
-            {
-                return null;
-            }
-            catch (IOException)
-            {
-                return null;
-            }
-            catch (NotSupportedException)
-            {
-                return null;
-            }
-            catch (InvalidOperationException)
-            {
-                return null;
-            }
-        }
-
         private void OnMenuGehaeuse(
             object sender,
             RoutedEventArgs e)
@@ -298,100 +237,7 @@ namespace PCVerwaltung
         {
             ContentHost.Content = new AllListsView();
         }
-
-
-
-        private void OpenAiButton_Click(
-    object sender,
-    RoutedEventArgs e)
-        {
-            if (_isAiChatOpen || _isAiAnimationRunning)
-            {
-                return;
-            }
-
-            _isAiAnimationRunning = true;
-
-            OpenAiButton.Visibility = Visibility.Collapsed;
-            JettAiLayer.Visibility = Visibility.Visible;
-
-            JettImage.Width = 250;
-            JettImage.Height = 390;
-            JettImage.Source = LoadLogo(
-                "Jett_dash_links.png");
-
-            DoubleAnimation dashAnimation = new DoubleAnimation
-            {
-                From = 610,
-                To = 0,
-                Duration = TimeSpan.FromMilliseconds(500),
-                EasingFunction = new CubicEase
-                {
-                    EasingMode = EasingMode.EaseOut
-                }
-            };
-
-            dashAnimation.Completed += (_, _) =>
-            {
-                JettImage.Width = 170;
-                JettImage.Height = 300;
-                JettImage.Source = LoadLogo(
-                    "Jett_stand.png");
-
-                _isAiChatOpen = true;
-                _isAiAnimationRunning = false;
-            };
-
-            JettAiTransform.BeginAnimation(
-                TranslateTransform.XProperty,
-                dashAnimation);
-        }
-
-
-        private void CloseAiButton_Click(
-    object sender,
-    RoutedEventArgs e)
-        {
-            if (!_isAiChatOpen || _isAiAnimationRunning)
-            {
-                return;
-            }
-
-            _isAiAnimationRunning = true;
-
-            JettImage.Width = 180;
-            JettImage.Height = 300;
-
-            JettImage.Source = LoadLogo(
-                "Jett_dash_rechts.png");
-
-            DoubleAnimation dashAnimation = new DoubleAnimation
-            {
-                From = 0,
-                To = 610,
-                Duration = TimeSpan.FromMilliseconds(500),
-                EasingFunction = new CubicEase
-                {
-                    EasingMode = EasingMode.EaseIn
-                }
-            };
-
-            dashAnimation.Completed += (_, _) =>
-            {
-                JettAiLayer.Visibility = Visibility.Collapsed;
-                OpenAiButton.Visibility = Visibility.Visible;
-
-                _isAiChatOpen = false;
-                _isAiAnimationRunning = false;
-            };
-
-            JettAiTransform.BeginAnimation(
-                TranslateTransform.XProperty,
-                dashAnimation);
-        }
-
-
-    
+    }
 
     private void SendAiButton_Click(
     object sender,

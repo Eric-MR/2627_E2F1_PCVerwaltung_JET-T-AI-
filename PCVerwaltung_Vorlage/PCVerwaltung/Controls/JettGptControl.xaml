@@ -1,0 +1,56 @@
+<UserControl x:Class="PCVerwaltung.Controls.JettGptControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:PCVerwaltung.Controls">
+    <Grid>
+        <Button x:Name="OpenAiButton"
+                Width="125"
+                Height="95"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,24,24"
+                Background="Transparent"
+                BorderThickness="0"
+                ToolTip="Jett-KI öffnen"
+                Click="OpenAiButton_Click"
+                Panel.ZIndex="110">
+            <Image x:Name="AiButtonLogo"
+                   Width="115"
+                   Height="85"
+                   Stretch="Uniform"
+                   Source="/PCVerwaltung;component/Images/Jettgpt_NoBkg_B.png" />
+        </Button>
+
+        <Grid x:Name="JettAiLayer"
+              Width="610"
+              Height="430"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              Margin="0,0,11,0"
+              Visibility="Collapsed"
+              Panel.ZIndex="100">
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="JettAiTransform"
+                                    X="610" />
+            </Grid.RenderTransform>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="360" />
+            </Grid.ColumnDefinitions>
+
+            <Image x:Name="JettImage"
+                   Grid.Column="0"
+                   Width="250"
+                   Height="390"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Stretch="Uniform"
+                   IsHitTestVisible="False"
+                   Source="/PCVerwaltung;component/Images/Jett_dash_links.png" />
+
+            <controls:JettGptChatWindow Grid.Column="1"
+                                        CloseRequested="ChatWindow_CloseRequested" />
+        </Grid>
+    </Grid>
+</UserControl>
