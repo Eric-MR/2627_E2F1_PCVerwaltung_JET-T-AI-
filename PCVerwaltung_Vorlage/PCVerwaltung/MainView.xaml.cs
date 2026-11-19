@@ -140,31 +140,6 @@ namespace PCVerwaltung
             Application.Current.Resources[resourceKey] = newBrush;
         }
 
-        private BitmapImage? LoadLogo(string fileName)
-        {
-            if (string.IsNullOrWhiteSpace(fileName)
-                || !string.Equals(
-                    Path.GetFileName(fileName),
-                    fileName,
-                    StringComparison.Ordinal))
-            {
-                return LoadFallbackLogo();
-            }
-
-            string resourcePath =
-                $"pack://application:,,,/PCVerwaltung;component/Images/{fileName}";
-
-            if (!Uri.TryCreate(
-                    resourcePath,
-                    UriKind.Absolute,
-                    out Uri? logoUri)
-                || logoUri.Scheme != "pack")
-            {
-                return LoadFallbackLogo();
-            }
-
-            return TryLoadBitmap(logoUri) ?? LoadFallbackLogo();
-        }
         private void OnMenuGehaeuse(
             object sender,
             RoutedEventArgs e)
@@ -237,31 +212,5 @@ namespace PCVerwaltung
         {
             ContentHost.Content = new AllListsView();
         }
-    }
-
-    private void SendAiButton_Click(
-    object sender,
-    RoutedEventArgs e)
-        {
-            string message = AiInputBox.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                MessageBox.Show(
-                    "Bitte zuerst eine Nachricht eingeben.",
-                    "Keine Nachricht",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-
-                return;
-            }
-
-            // Hier kannst du die Nachricht weiterverarbeiten.
-            MessageBox.Show(
-                message,
-                "Nachricht aus dem Chat");
-        }
-
-
     }
 }
