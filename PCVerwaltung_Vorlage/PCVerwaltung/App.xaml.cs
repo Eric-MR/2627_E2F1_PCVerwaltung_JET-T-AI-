@@ -15,10 +15,12 @@ namespace PCVerwaltung
         public static List<Case> Cases { get; private set; } = new();
         public static List<CPU> CPUs { get; private set; } = new();
         public static List<Mainboard> Mainboards { get; private set; } = new();
+        public static List<HardwareKomponente> Rams { get; private set; } = new();
         public static List<PC> PCs { get; private set; } = new();
         public List<Case> CasesData => Cases;
         public List<CPU> CPUsData => CPUs;
         public List<Mainboard> MainboardsData => Mainboards;
+        public List<HardwareKomponente> RamsData => Rams;
         public List<PC> PCsData => PCs;
 
         protected override void OnStartup(StartupEventArgs e)
@@ -35,6 +37,7 @@ namespace PCVerwaltung
                 Cases = Database.GetCases();
                 CPUs = Database.GetCPUs();
                 Mainboards = Database.GetMainboards();
+                Rams = Database.GetHardwareKomponentenByTypeName("ram");
 
                 PCs = new List<PC>();
                 var count = Math.Min(Math.Min(Cases.Count, CPUs.Count), Mainboards.Count);

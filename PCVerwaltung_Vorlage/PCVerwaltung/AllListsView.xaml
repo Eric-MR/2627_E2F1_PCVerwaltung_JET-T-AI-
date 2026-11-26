@@ -240,6 +240,19 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
+
+            <TabItem Header="RAM">
+                <DataGrid ItemsSource="{Binding RamsData}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          CanUserAddRows="False" HeadersVisibility="Column"
+                          EnableRowVirtualization="True" Margin="4">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Hersteller" Binding="{Binding Hersteller}" Width="*" />
+                        <DataGridTextColumn Header="Modell" Binding="{Binding Modell}" Width="2*" />
+                        <DataGridTextColumn Header="Details" Binding="{Binding Beschreibung}" Width="2*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>
