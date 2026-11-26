@@ -112,6 +112,7 @@ namespace PCVerwaltung.Classes
                 "case" or "gehäuse" or "gehaeuse" => new[] { "case", "gehäuse", "gehaeuse" },
                 "cpu" or "prozessor" => new[] { "cpu", "prozessor" },
                 "mainboard" or "motherboard" => new[] { "mainboard", "motherboard" },
+                "ram" or "arbeitsspeicher" => new[] { "ram", "arbeitsspeicher" },
                 _ => new[] { typeName.Trim().ToLowerInvariant() }
             };
         }

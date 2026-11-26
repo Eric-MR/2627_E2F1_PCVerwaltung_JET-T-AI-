@@ -1,4 +1,5 @@
 using MaterialDesignThemes.Wpf;
+using PCVerwaltung.Classes;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -189,21 +190,81 @@ namespace PCVerwaltung
             object sender,
             RoutedEventArgs e)
         {
-            ContentHost.Content = new MainboardView();
+            var view = new MainboardView();
+            view.Saved += data =>
+            {
+                try
+                {
+                    var typeId = App.Database.EnsureKomponententyp("mainboard");
+                    data.Id = App.Database.InsertHardwareKomponente(new HardwareKomponente
+                    {
+                        KomponententypId = typeId,
+                        Hersteller = data.Hersteller,
+                        Modell = data.Modell,
+                        Beschreibung = $"Formfaktor: {data.Formfaktor}; Sockel: {data.Sockel}",
+                        Aktiv = true
+                    });
+                    App.Mainboards.Add(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Mainboard konnte nicht in der Datenbank gespeichert werden.\n\n{ex.Message}",
+                        "Database error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+            ContentHost.Content = view;
         }
 
         private void OnMenuCpu(
             object sender,
             RoutedEventArgs e)
         {
-            ContentHost.Content = new CpuView();
+            var view = new CpuView();
+            view.Saved += data =>
+            {
+                try
+                {
+                    var typeId = App.Database.EnsureKomponententyp("cpu");
+                    data.Id = App.Database.InsertHardwareKomponente(new HardwareKomponente
+                    {
+                        KomponententypId = typeId,
+                        Hersteller = "",
+                        Modell = data.Modell,
+                        Beschreibung = $"Takt: {data.Taktfrequenz.ToString(System.Globalization.CultureInfo.InvariantCulture)} GHz",
+                        Aktiv = true
+                    });
+                    App.CPUs.Add(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"CPU konnte nicht in der Datenbank gespeichert werden.\n\n{ex.Message}",
+                        "Database error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+            ContentHost.Content = view;
         }
 
         private void OnMenuRam(
             object sender,
             RoutedEventArgs e)
         {
-            ContentHost.Content = new RamView();
+            var view = new RamView();
+            view.Saved += data =>
+            {
+                try
+                {
+                    var typeId = App.Database.EnsureKomponententyp("ram");
+                    data.KomponententypId = typeId;
+                    data.KomponenteId = App.Database.InsertHardwareKomponente(data);
+                    App.Rams.Add(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"RAM konnte nicht in der Datenbank gespeichert werden.\n\n{ex.Message}",
+                        "Database error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+            ContentHost.Content = view;
         }
 
         private void OnMenuAllLists(
